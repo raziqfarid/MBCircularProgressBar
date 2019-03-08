@@ -64,6 +64,10 @@
     [self setTextOffset:CGPointMake(0, 0)];
     [self setUnitFontName:@"HelveticaNeue-Thin"];
     [self setCountdown:NO];
+    
+    [self setCompleteLineStrokeColor:[UIColor greenColor]];
+    [self setCompletedImage:[UIImage imageNamed:@"tick.png"]];
+    
 }
 
 #pragma mark - Getters and Setters for layer properties
@@ -276,6 +280,24 @@
 
 -(BOOL)countdown {
   return self.progressLayer.countdown;
+}
+
+
+-(void)setCompleteLineStrokeColor:(UIColor *)color{
+    self.progressLayer.completeStrokeColor = color;
+}
+
+-(UIColor*)completeLineStrokeColor{
+    return self.progressLayer.completeStrokeColor;
+}
+
+
+-(void)setCompletedImage:(UIImage *)completedImage {
+    self.progressLayer.completeImage = completedImage;
+}
+
+-(UIImage *)completedImage {
+    return self.progressLayer.completeImage;
 }
 
 #pragma mark - CALayer

@@ -37,6 +37,9 @@
 @dynamic textOffset;
 @dynamic countdown;
 
+@dynamic completeImage;
+@dynamic completeStrokeColor;
+
 #pragma mark - Drawing
 
 //-(void)setValue:(CGFloat)value{
@@ -52,8 +55,17 @@
     [self drawEmptyBar:size context:context];
     [self drawProgressBar:size context:context];
   
-    if (self.showValueString){
-      [self drawText:size context:context];
+//    if (self.showValueString){
+//      [self drawText:size context:context];
+//    }
+    
+    if (self.value == 100) {
+       // [self imageWithBorderFromImage:self.completeImage];
+        [self drawImage:size context:context];
+    } else {
+        if (self.showValueString){
+             [self drawText:size context:context];
+        }
     }
     
     UIGraphicsPopContext();
@@ -115,8 +127,14 @@
 
     
     CGContextAddPath(c, strokedArc);
-    CGContextSetFillColorWithColor(c, self.progressColor.CGColor);
-    CGContextSetStrokeColorWithColor(c, self.progressStrokeColor.CGColor);
+     if (self.value == 100) {
+    
+    CGContextSetFillColorWithColor(c, self.completeStrokeColor.CGColor);
+    CGContextSetStrokeColorWithColor(c, self.completeStrokeColor.CGColor);
+     } else {
+         CGContextSetFillColorWithColor(c, self.progressColor.CGColor);
+         CGContextSetStrokeColorWithColor(c, self.progressStrokeColor.CGColor);
+     }
     CGContextDrawPath(c, kCGPathFillStroke);
     
     CGPathRelease(arc);
@@ -172,6 +190,56 @@
   );
   
   [text drawAtPoint:textCenter];
+}
+
+- (void)drawImage:(CGSize)rectSize context:(CGContextRef)c {
+    UIImage *image = self.completeImage;
+   // CGPoint textCenter = CGPointMake(16,12);
+    
+    CGSize percentSize = CGSizeMake(16, 12);
+    CGPoint textCenter = CGPointMake(
+                                     rectSize.width/2-percentSize.width/2 + self.textOffset.x,
+                                     rectSize.height/2-percentSize.height/2 + self.textOffset.y
+                                     );
+    
+    [image drawAtPoint:textCenter];
+    //[image drawInRect:CGRectMake(0, 0, 16, 12)];
+}
+
+- (void)imageWithBorderFromImage:(UIImage*)source
+{
+//    const CGFloat margin = 40.0f;
+//    CGSize size = CGSizeMake([source size].width + 2*margin, [source size].height + 2*margin);
+//    UIGraphicsBeginImageContext(size);
+//
+//    [[UIColor whiteColor] setFill];
+//    [[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, size.width, size.height)] fill];
+//
+//    CGRect rect = CGRectMake(margin, margin, size.width-2*margin, size.height-2*margin);
+//    [source drawInRect:rect blendMode:kCGBlendModeNormal alpha:1.0];
+//
+//    UIImage *testImg =  UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+   // return testImg;
+    
+        // Setup a new context with the correct size
+    CGFloat width = 35;
+    CGFloat height = 35;
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(width, height), NO, 0.0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    UIGraphicsPushContext(context);
+    
+        // Now we can draw anything we want into this new context.
+    CGPoint origin = CGPointMake((width - source.size.width) / 2.0f,
+                                 (height - source.size.height) / 2.0f);
+    [source drawAtPoint:origin];
+    
+        // Clean up and get the new image.
+    UIGraphicsPopContext();
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    
 }
 
 #pragma mark - Override methods to support animations

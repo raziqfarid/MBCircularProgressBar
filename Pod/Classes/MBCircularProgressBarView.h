@@ -136,4 +136,18 @@ IB_DESIGNABLE
  */
 @property (nonatomic,assign) IBInspectable BOOL      countdown;
 
+
+
+/**
+ * The color of the Completed background bar stroke color
+ */
+@property (nonatomic,strong) IBInspectable UIColor   *completeLineStrokeColor;
+
+
+
+/**
+ * The color of the background bar stroke color
+ */
+@property (nonatomic,strong) IBInspectable UIImage   *completedImage;
+
 @end

@@ -140,4 +140,19 @@
  */
 @property (nonatomic,assign)  BOOL      countdown;
 
+
+
+
+/**
+ * The color of the progress bar frame
+ */
+@property (nonatomic,strong) UIColor    *completeStrokeColor;
+
+
+/**
+ * The color of the progress bar frame
+ */
+@property (nonatomic,strong) UIImage    *completeImage;
+
+
 @end
